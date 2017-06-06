@@ -1,0 +1,47 @@
+<div class="page">
+  <div class="logo">
+    <div id="animNaima"></div>
+    <h1>On fait
+      <span
+         class="txt-rotate"
+         data-period="2000"
+         data-rotate='[ "des produits", "du dev", "du design" ]'></span>
+    </h1>
+  </div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    var name = "ACCUEIL";
+    var url = "home.html";
+    var prevName = "";
+    var prevUrl = "";
+    var nextName = "WORK";
+    var nextUrl = "whoooooo.html";
+    $('.left-bar a, .right-bar a').toggleClass('changing');
+    setTimeout(function(){
+      $('.left-bar a').attr('href',prevUrl).text(prevName);
+      $('.left-bar a').toggleClass('changing');
+      $('.right-bar a').attr('href',nextUrl).text(nextName);
+      $('.right-bar a').toggleClass('changing');
+    }, 500);
+    
+  $.holdReady(true);                              //set hold
+  function releaseHold() { $.holdReady(false); }  //callback to release hold
+  $.getScript('js/mords.js', releaseHold);          //load script then release hold
+
+  });
+
+  //anim logo
+  var params = {
+    container: document.getElementById('animNaima'),
+    renderer: 'svg',
+    loop: true,
+    autoplay: true,
+    animationData: animationData
+  };
+
+  var anim;
+
+  anim = bodymovin.loadAnimation(params);
+</script>
+</div>
