@@ -17,11 +17,10 @@
         <div id="animNaimaLoad"></div>
       </div>
     </div>
-    <div class="top-bar"><p>TABTAB!</p></div>
-    <div class="left-bar"><a class="page-link" href="whoooooo.html">WHOOO.OOO</a></div>
-    <div class="right-bar"><a class="page-link" href="#">-</a></div>
+    <div class="top-bar"><p>About</p></div>
+    <div class="left-bar"><a class="page-link" href="index.html">HOME</a></div>
+    <div class="right-bar"><a class="page-link" href="whoooooo.html">WORK</a></div>
     <div class="bottom-bar">
-      <a href="about.html" class="page-link">about</a>
     </div>
     <div class="nav">
       <div class="nav-inner">
@@ -53,25 +52,22 @@
     </div>
     <div class="content">
       <div class="header">
-        <img src="images/projets/tabtab/logo_tabtab.jpg">
+        <canvas id="webgl"></canvas>
+        <h1>About nous</h1>
       </div>
       <div class="row">
-        <div class="col-3">
+        <img src="images/about/fam.jpg">          
+      </div>
+      <div class="row">
+        <div class="col-5">
+          <h2>Balthazar</h2>
           <p>DUNE est l'histoire d'un voyage initiatique qui tourne mal. Au lieu d'épanouir son
           individualité et de devenir le héros qui a dépassé son propre égoisme et qui agit en
           vue de la libération de tous, Paul Atréides devient l'Empereur Divin, maître politique
           et spirituel de l'univers connu.</p>
         </div>
-        <div class="col-3">
-          <p>
-                     En tant que roman postmoderne, DUNE nous présente
-          une vision du temps qui a beaucoup en commun avec celle de Gilles Deleuze, un
-          temps non-déterministe à bifurcations multiples, elles-mêmes en devenir. Cette image
-          du temps est opposée à une autre image, d'un temps spatialisé, déterminé et
-          prévisible. Tous les personnages dans DUNE, 
-          </p>
-        </div>
-        <div class="col-3">
+        <div class="col-5">
+          <h2>Tristan</h2>
           <p>
             tout comme les personnages
           conceptuels chez Deleuze, sont définis par leur rapport au temps. Finalement, DUNE
@@ -94,6 +90,52 @@
 
         anim = bodymovin.loadAnimation(params);
     </script>
+    <script src="js/regl.min.js"></script>
+    <script type="x-shader/x-fragment" id="fragmentShader">
+    #define TWO_PI 6.2831853072
+    #define PI 3.14159265359
+
+    precision highp float;
+
+    uniform float globaltime;
+    uniform vec2 resolution;
+    uniform float aspect;
+    uniform float scroll;
+    uniform float velocity;
+    uniform sampler2D texture;
+
+    const float timescale = 0.1;
+    const float twist = 2.0;
+
+    vec2 rotate(vec2 v, float angle) {
+      float c = cos(angle);
+      float s = sin(angle);
+      return v * mat2(c, -s, s, c);
+    }
+
+    float nsin(float value) {
+      return sin(value * TWO_PI) * 0.5 + 0.5;
+    }
+
+    void main(void) {
+      float time = globaltime * timescale;
+      vec2 center = vec2(sin(TWO_PI * time * 0.2), cos(TWO_PI * time * 0.2)) * nsin(time * 0.3) * 0.5;
+      vec2 tx = (gl_FragCoord.xy / resolution.xy - 0.5 - center) * vec2(aspect, 1.0);
+      float len = 1.0 - length(tx);
+      float zoom = 1.0 + scroll - len * 3.0 * (1.0 - scroll) + len * velocity * 10.0;
+
+      vec4 imgColor = texture2D(
+        texture,
+        rotate(
+          (tx + center) * vec2(1.0, -1.0) * zoom,
+          twist * TWO_PI * nsin(len + time) * scroll + time
+        ) + 0.5
+      );
+
+      gl_FragColor = imgColor;
+    }
+    </script>
+    <script src="js/about.js"></script>
   </body>
 </html>
 
