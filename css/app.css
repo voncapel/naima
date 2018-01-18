@@ -331,11 +331,15 @@ img,video{
   font-size: 1.2em;
   transform: rotate(-90deg);
   transition: all .5s;
+  line-height: 16px;
+  text-align: center;
 }
 .right-bar a{
   font-size: 1.2em;
   transform: rotate(90deg);
   transition: all .5s;
+  line-height: 16px;
+  text-align: center;
 }
 .changing{
   padding: 30px 0;
@@ -375,4 +379,18 @@ img,video{
   display: block;
   width: 100vw;
   height: 100vh;
+}
+
+
+/*buttons*/
+.button{
+  background: #FAEF83;
+  border-radius: 100px;
+  display: inline-block;
+  width: auto;
+}
+.button a{
+  color: #13213C;
+  display: inline-block;
+  padding:10px 20px;
 }
